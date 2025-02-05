@@ -10,10 +10,10 @@ const AnimatedBox = animated(Box);
 const RichTextEditor = () => {
 	const [editorContent, setEditorContent] = useState("");
 
-	const slideIn = useSpring({
-		from: { transform: 'translateY(50px)', opacity: 0 },
-		to: { transform: 'transaletY(0)', opacity: 1 },
-		config: { mass: 4, tension: 80, friction: 15 }
+	const editorSpring = useSpring({
+		from: { rotateX: 90, opacity: 0 },
+		to: { rotateX: 0, opacity: 1 },
+		config: { mass: 5, tension: 200, friction: 35 }
 	});
 
 	const updatedContent = () => {
@@ -43,7 +43,7 @@ const RichTextEditor = () => {
 	};
 
 	return (
-		<AnimatedBox style={slideIn} minH="150px" display="flex" flexDirection="column">
+		<AnimatedBox style={editorSpring} minH="150px" display="flex" flexDirection="column">
 			<ReactQuill
 				value={editorContent}
 				onChange={handleChange}
@@ -52,6 +52,7 @@ const RichTextEditor = () => {
 					display: "flex",
 					flexDirection: "column",
 				}}
+				placeholder="Type something or add user data from the form"
 			/>
 		</AnimatedBox>
 	);

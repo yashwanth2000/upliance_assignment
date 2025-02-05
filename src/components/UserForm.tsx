@@ -35,10 +35,10 @@ const UserForm = () => {
 	const [initialFormData, setInitialFormData] = useState<FormData>(formData);
 	const [isSaved, setIsSaved] = useState(false);
 
-	const fadeIn = useSpring({
-		from: { opacity: 0, transform: "scale(0.95)" },
-		to: { opacity: 1, transform: "scale(1)" },
-		config: { tension: 220, friction: 22 },
+	const formSpring = useSpring({
+		from: { x: -100, opacity: 0 },
+		to: { x: 0, opacity: 1 },
+		config: { mass: 1, tension: 280, friction: 60 }
 	});
 
 	useEffect(() => {
@@ -136,7 +136,7 @@ const UserForm = () => {
 	}
 
 	return (
-		<AnimatedCard style={fadeIn} w="md">
+		<AnimatedCard style={formSpring} w="md">
 			<Card.Header>
 				<Text fontSize="xl" fontWeight="bold">User Form</Text>
 			</Card.Header>

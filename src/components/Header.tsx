@@ -25,7 +25,16 @@ const Header = () => {
 	};
 
 	return (
-		<Box p="4" as='header' borderBottom="1px solid" borderColor="gray.200">
+		<Box
+			p="4"
+			as='header'
+			backdropFilter="blur(10px)"
+			borderBottom="1px solid"
+			borderColor="gray.200"
+			position="sticky"
+			top="0"
+			zIndex="1000"
+		>
 			<Flex justify="space-between" align="center">
 				<Text fontSize="xl" fontWeight="bold">
 					Welcome, {username}

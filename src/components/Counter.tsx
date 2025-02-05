@@ -61,6 +61,19 @@ const Counter = () => {
 		},
 	});
 
+	const numberSpring = useSpring({
+		from: { transform: 'rotate(-180deg)', scale: 0 },
+		to: { transform: 'rotate(0deg)', scale: 1 },
+		reset: true,
+		config: { tension: 200, friction: 12 }
+	});
+
+	const buttonSpring = useSpring({
+		from: { y: 50, opacity: 0 },
+		to: { y: 0, opacity: 1 },
+		config: { mass: 1, tension: 280, friction: 20 }
+	});
+
 	const increment = () => setCount(prevCount => prevCount + 1);
 	const decrement = () => setCount(prevCount => prevCount - 1);
 	const reset = () => setCount(0);
@@ -71,25 +84,28 @@ const Counter = () => {
 				<VStack gap="6">
 					<animated.div
 						style={{
-							fontSize: "48px",
-							fontWeight: "bold",
+							...numberSpring,
+							fontSize: '50px',
+							fontWeight: 'bold',
+							textShadow: '2px 2px 4px rgba(0,0,0,0.2)',
 						}}
 					>
 						{springProps.number.to((val) => Math.floor(val))}
 					</animated.div>
 					<Box>
-						<Flex gap="3" width="100%">
-							<Button flex="1" bgColor="green" size="lg" onClick={increment}>
-								Increment
-							</Button>
-							<Button flex="1" bgColor="gray" size="lg" onClick={reset}>
-								Reset
-							</Button>
-							<Button flex="1" bgColor="red" size="lg" onClick={decrement}>
-								Decrement
-							</Button>
-						</Flex>
-
+						<animated.div style={buttonSpring}>
+							<Flex gap="3" width="100%">
+								<Button flex="1" bgColor="green" size="lg" onClick={increment}>
+									Increment
+								</Button>
+								<Button flex="1" bgColor="gray" size="lg" onClick={reset}>
+									Reset
+								</Button>
+								<Button flex="1" bgColor="red" size="lg" onClick={decrement}>
+									Decrement
+								</Button>
+							</Flex>
+						</animated.div>
 					</Box>
 				</VStack>
 			</Box>
