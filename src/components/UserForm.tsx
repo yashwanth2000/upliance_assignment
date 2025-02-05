@@ -4,6 +4,7 @@ import { useSpring, animated } from "@react-spring/web";
 import { Field } from "./ui/field";
 import { Toaster, toaster } from "./ui/toaster"
 import { v4 as uuidv4 } from "uuid";
+import { eventBus } from "../utils/eventBus";
 
 const AnimatedCard = animated(Card.Root);
 
@@ -108,6 +109,7 @@ const UserForm = () => {
 			localStorage.setItem("userData", JSON.stringify(formData));
 			setInitialFormData(formData);
 			setIsSaved(true);
+			eventBus.emit('userDataUpdated');
 			toaster.create({
 				type: "success",
 				description: "User data saved successfully",
@@ -136,7 +138,7 @@ const UserForm = () => {
 	return (
 		<AnimatedCard style={fadeIn} w="md">
 			<Card.Header>
-				<Text fontSize="xl" fontWeight="bold">User Information</Text>
+				<Text fontSize="xl" fontWeight="bold">User Form</Text>
 			</Card.Header>
 			<Card.Body>
 				<Stack gap="4">
@@ -206,6 +208,7 @@ const UserForm = () => {
 						variant="solid"
 						colorScheme="blue"
 						onClick={handleSubmit}
+						disabled={isSaved}
 					>
 						Save
 					</Button>
