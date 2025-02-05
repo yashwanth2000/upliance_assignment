@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
 	Button,
 	Card,
+	Icon,
 	Input,
 	Stack,
 	Text,
@@ -10,18 +11,33 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Field } from "../ui/field";
+import { PasswordInput, } from "../ui/password-input"
 import { Toaster, toaster } from "../ui/toaster";
 import { InputGroup } from '../ui/input-group';
 import { BiUser } from 'react-icons/bi';
+import { MdEmail } from 'react-icons/md';
+import { MdLock } from 'react-icons/md';
+import { FaGoogle } from 'react-icons/fa';
+
+interface FormErrors {
+	email?: string;
+	password?: string;
+	name?: string;
+}
+interface FormData {
+	email: string;
+	password: string;
+	name: string;
+}
 
 const Login = () => {
 	const [isLogin, setIsLogin] = useState(true);
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<FormData>({
 		email: '',
 		password: '',
 		name: ''
 	});
-	const [errors, setErrors] = useState({});
+	const [errors, setErrors] = useState<FormErrors>({});
 
 	const { loginWithGoogle, loginWithMock, signupWithMock } = useAuth();
 	const navigate = useNavigate();
@@ -33,7 +49,7 @@ const Login = () => {
 			[name]: value
 		}));
 
-		if (errors[name]) {
+		if (errors[name as keyof FormErrors]) {
 			setErrors(prev => ({
 				...prev,
 				[name]: undefined,
@@ -123,32 +139,44 @@ const Login = () => {
 
 	return (
 		<div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-			<Card.Root display="flex" justifyContent="center" alignItems="center" bgColor="#f4f4f4" w="md">
+			<Card.Root display="flex" justifyContent="center" alignItems="center" w="md">
 				<Card.Header>
-					<Text fontSize="xl" fontWeight="bold">{isLogin ? 'Login' : 'Sign Up'}</Text>
+					<Text fontSize="xl" fontWeight="bold" textAlign="center">{isLogin ? 'Login' : 'Sign Up'}</Text>
+					<Text fontSize="sm">{isLogin ? 'Enter your email and password to login' : 'Enter your email, password and name to sign up'}</Text>
 				</Card.Header>
 				<Card.Body>
 					<VStack gap={6}>
-						<Button width="full" colorScheme="red" onClick={handleGoogleLogin} _hover={{ bg: "red.500" }}>Sign in with Google</Button>
+						<Button width="full" onClick={handleGoogleLogin}>
+							<Icon size="sm">
+								<FaGoogle />
+							</Icon>
+							Sign in with Google
+						</Button>
 						<Text>OR</Text>
-						<form style={{ width: '100%' }} onSubmit={handleMockAuth}>
+						<form onSubmit={handleMockAuth}>
 							<Stack gap="4">
 								{!isLogin && (
-									<Field label="Name" required>
-										<Input name="name" value={formData.name} onChange={handleChange} placeholder="Enter your name" _hover={{ borderColor: "blue.400" }} />
+									<Field label="Name" required >
+										<InputGroup flex="1" startElement={<BiUser />} width="100%">
+											<Input name="name" value={formData.name} onChange={handleChange} placeholder="Enter your name" _hover={{ borderColor: "blue.400" }} />
+										</InputGroup>
 										{errors.name && <span style={{ color: "red", fontSize: "15px" }}>{errors.name}</span>}
 									</Field>
 								)}
 								<Field label="Email" required>
-									<Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" _hover={{ borderColor: "blue.400" }} />
+									<InputGroup startElement={<MdEmail />} width="100%">
+										<Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" _hover={{ borderColor: "blue.400" }} />
+									</InputGroup>
 									{errors.email && <span style={{ color: "red", fontSize: "15px" }}>{errors.email}</span>}
 								</Field>
 								<Field label="Password" required>
-									<Input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" _hover={{ borderColor: "blue.400" }} />
+									<InputGroup startElement={<MdLock />} width="100%">
+										<PasswordInput name="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" _hover={{ borderColor: "blue.400" }} />
+									</InputGroup>
 									{errors.password && <span style={{ color: "red", fontSize: "15px" }}>{errors.password}</span>}
 								</Field>
 							</Stack>
-							<Card.Footer justifyContent="flex-end" mt="4">
+							<Card.Footer justifyContent="flex-end" mt="6">
 								<Button variant="outline" mr="2" onClick={() => setIsLogin(!isLogin)}>
 									{isLogin ? 'Need an account?' : 'Have an account?'}
 								</Button>

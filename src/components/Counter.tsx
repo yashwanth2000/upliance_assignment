@@ -73,7 +73,6 @@ const Counter = () => {
 						style={{
 							fontSize: "48px",
 							fontWeight: "bold",
-							color: count > 5 ? "white" : "black",
 						}}
 					>
 						{springProps.number.to((val) => Math.floor(val))}

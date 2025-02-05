@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	Box,
 	Button,
@@ -10,15 +9,15 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ColorModeButton } from './ui/color-mode';
 
-const Header: React.FC = () => {
+const Header = () => {
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
-	const username =
-		(user as any)?.name ||
-		(user as any)?.displayName ||
-		user?.email?.split('@')[0] ||
-		'User';
+	const username = user
+		? user.authType === 'mock'
+			? user.name
+			: user.displayName || user.email?.split('@')[0]
+		: 'User';
 
 	const handleLogout = async () => {
 		await logout();
@@ -26,7 +25,7 @@ const Header: React.FC = () => {
 	};
 
 	return (
-		<Box p="4" as='header'>
+		<Box p="4" as='header' borderBottom="1px solid" borderColor="gray.200">
 			<Flex justify="space-between" align="center">
 				<Text fontSize="xl" fontWeight="bold">
 					Welcome, {username}

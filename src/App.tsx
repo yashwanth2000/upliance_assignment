@@ -6,6 +6,7 @@ import RichTextEditor from "./components/RichTextEditor"
 import Login from "./components/auth/Login"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
 import Header from "./components/Header"
+import Dashboard from "./components/Dashboard"
 
 const MainLayout = () => {
 	return (
@@ -50,6 +51,17 @@ const MainLayout = () => {
 					height="100%"
 				>
 					<RichTextEditor />
+				</Box>
+
+				<Box
+					mt="8"
+					p="6"
+					border="1px solid"
+					borderColor="gray.200"
+					borderRadius="lg"
+					boxShadow="sm"
+				>
+					<Dashboard />
 				</Box>
 			</Container>
 		</>
